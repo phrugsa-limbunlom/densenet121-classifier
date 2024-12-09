@@ -29,7 +29,7 @@ def exploratory(directory):
 exploratory(train_data_dir)
 ```
 
-![img_2.png](img_2.png)
+![img_2.png](figure/distribution.png)
 
 ### Data Preprocessing
 ```
@@ -86,11 +86,11 @@ plt.imshow(preprocessing_img)
 ``` 
 Before Preprocessing
 
-![img_3.png](img_3.png)
+![img_3.png](figure/original_image.png)
 
 After Preprocessing
 
-![img.png](img.png)
+![img.png](figure/preprocessed_image.png)
 
 ### Training
 
@@ -115,7 +115,7 @@ for layer in base_model.layers:
 # Compile the model
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 ```
-![img_1.png](img_1.png)
+![img_1.png](figure/loss.png)
 
 ### Evaluation
 ```
