@@ -93,7 +93,7 @@ After Preprocessing
 
 ![img.png](figure/preprocessed_image.png)
 
-### Training
+## Training
 
 Train the model using DenseNet201 as the base model and add the last layer with one neuron unit and activation Sigmoid for binary classification (Wildfire/ No wildfire).
 
