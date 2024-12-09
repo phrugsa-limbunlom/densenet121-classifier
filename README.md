@@ -32,6 +32,7 @@ exploratory(train_data_dir)
 ![img_2.png](figure/distribution.png)
 
 ## Data Preprocessing
+Preprocessed images  using multiple image preprocessing techniques including colour adjustment, increasing sharpness, median filtering, and contrast enhancement.
 ```
 def color_adjustment(image, brightness_range=(-50, 50)):
     brightness = random.randint(brightness_range[0], brightness_range[1])
