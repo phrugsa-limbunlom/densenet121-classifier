@@ -1,7 +1,7 @@
 # Wildfire Classification from Satellite Images
 Implemented a CNN-based classification system for over 40,000 satellite images. Built and trained DenseNet model for wildfire prediction by achieving 97% accuracy.
 
-### Exploratory
+## Exploratory
 + Number of no wildfire images : 14500 images
 + Number of wildfire images : 15750 images
 ```
@@ -31,7 +31,8 @@ exploratory(train_data_dir)
 
 ![img_2.png](figure/distribution.png)
 
-### Data Preprocessing
+## Data Preprocessing
+Preprocessed images  using multiple image preprocessing techniques including colour adjustment, increasing sharpness, median filtering, and contrast enhancement.
 ```
 def color_adjustment(image, brightness_range=(-50, 50)):
     brightness = random.randint(brightness_range[0], brightness_range[1])
@@ -92,7 +93,7 @@ After Preprocessing
 
 ![img.png](figure/preprocessed_image.png)
 
-### Training
+## Training
 
 Train the model using DenseNet201 as the base model and add the last layer with one neuron unit and activation Sigmoid for binary classification (Wildfire/ No wildfire).
 
@@ -117,7 +118,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 ```
 ![img_1.png](figure/loss.png)
 
-### Evaluation
+## Evaluation
 ```
 preds = model.predict(test_generator)  
 test_loss, test_acc = model.evaluate(test_generator) 
@@ -128,7 +129,7 @@ Test Loss:  0.087
 
 Test Accuracy:  97.0 %
 
-### Prediction
+## Prediction
 ```
 def get_prediction(model_name, image):
     if model_name == "DenseNet201":
