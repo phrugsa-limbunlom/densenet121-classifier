@@ -4,7 +4,7 @@ Implemented a CNN-based classification system for over 40,000 satellite images. 
 ## Exploratory
 + Number of no wildfire images : 14500 images
 + Number of wildfire images : 15750 images
-```
+``` python
 def exploratory(directory):
 
     labels = os.listdir(directory)
@@ -33,7 +33,7 @@ exploratory(train_data_dir)
 
 ## Data Preprocessing
 Preprocessed images  using multiple image preprocessing techniques including colour adjustment, increasing sharpness, median filtering, and contrast enhancement.
-```
+``` python
 def color_adjustment(image, brightness_range=(-50, 50)):
     brightness = random.randint(brightness_range[0], brightness_range[1])
     adjusted_image = np.clip(image.astype(np.int16) + brightness, 0, 255).astype(np.uint8)
@@ -94,10 +94,41 @@ After Preprocessing
 ![img.png](figure/preprocessed_image.png)
 
 ## Training
+Load images from training, validation, and testing set
+``` python
+train_data_dir = "preprocessed/train"
+valid_data_dir =  "preprocessed/valid"
+test_data_dir = "preprocessed/test"
+
+# Set image size for resizing
+img_width, img_height = 224, 224
+
+batch_size = 64
+
+# Create data generators for training and validation sets
+train_datagen = ImageDataGenerator(rescale=1./255)  # Normalize pixel values
+validation_datagen = ImageDataGenerator(rescale=1./255)
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+train_generator = train_datagen.flow_from_directory(train_data_dir,
+                                             target_size=(img_width, img_height),
+                                             batch_size=batch_size,
+                                             class_mode='binary') 
+                                             
+valid_generator = validation_datagen.flow_from_directory(valid_data_dir,
+                                                 target_size=(img_width, img_height),
+                                                 batch_size=batch_size,
+                                                 class_mode='binary')
+
+test_generator = test_datagen.flow_from_directory(test_data_dir,
+                                                 target_size=(img_width, img_height),
+                                                 batch_size=batch_size,
+                                                 class_mode='binary')
+```
 
 Train the model using DenseNet201 as the base model and add the last layer with one neuron unit and activation Sigmoid for binary classification (Wildfire/ No wildfire).
 
-```
+``` python
 base_model = DenseNet201(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 
 # Add custom classification layers
@@ -116,10 +147,48 @@ for layer in base_model.layers:
 # Compile the model
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 ```
+
+``` python
+# Defining an Early Stopping and Model Checkpoints
+early_stopping = EarlyStopping(monitor = 'val_accuracy',
+                              patience = 3, mode = 'max',
+                              restore_best_weights = True)
+
+checkpoint = ModelCheckpoint('best_model.h5',
+                            monitor = 'val_accuracy',
+                            save_best_only = True)
+```
+
+``` python
+# Train the model
+history = model.fit_generator(
+    train_generator,
+    steps_per_epoch=len(train_generator),  # Adjust based on data size
+    epochs=3,  # Adjust number of epochs
+    validation_data=valid_generator,
+    validation_steps=len(valid_generator),  # Adjust based on data size
+    callbacks=[early_stopping, checkpoint]  # Add callbacks as needed
+)
+```
+``` python
+# Extract loss values from the history
+loss = history.history['loss']
+val_loss = history.history['val_loss']  # Extract validation loss values
+
+# Plot loss
+plt.plot(loss, label='Training Loss')
+plt.plot(val_loss, label='Validation Loss')  # Plot validation loss
+plt.title('Training and Validation Loss Over Epochs (DenseNet201)')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+```
+
 ![img_1.png](figure/loss.png)
 
 ## Evaluation
-```
+``` python
 preds = model.predict(test_generator)  
 test_loss, test_acc = model.evaluate(test_generator) 
 print('\nTest Loss: ', test_loss)
@@ -130,7 +199,7 @@ Test Loss:  0.087
 Test Accuracy:  97.0 %
 
 ## Prediction
-```
+``` python
 def get_prediction(model_name, image):
     if model_name == "DenseNet201":
         base_model = DenseNet201(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
