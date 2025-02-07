@@ -1,5 +1,13 @@
-# Wildfire Classification from Satellite Images
-Implemented a CNN-based classification system for over 40,000 satellite images. Built and trained DenseNet model for wildfire prediction by achieving 97% accuracy.
+<h1 align="center"> Wildfire Classification from Satellite Images </h1>
+<p align="center">
+    Implemented a CNN-based classification system for over 40,000 satellite images. 
+    <br>
+    Built and trained the DenseNet201 model for wildfire prediction. The model can achieve 97% accuracy in the testing set.
+</p>    
+
+<div align="center">
+  <img alt="Tensorflow" src="https://img.shields.io/badge/-Tensorflow-orange?style=flat&logo=Tensorflow&logoColor=white">
+</div>
 
 ## Exploratory
 + Number of no wildfire images : 14500 images
