@@ -9,6 +9,9 @@
   <img alt="Tensorflow" src="https://img.shields.io/badge/-Tensorflow-orange?style=flat&logo=Tensorflow&logoColor=white">
 </div>
 
+## Dataset
+[Wildfire Prediction Dataset (Satellite Images)](https://www.kaggle.com/datasets/abdelghaniaaba/wildfire-prediction-dataset)
+
 ## Exploratory
 + Number of no wildfire images : 14500 images
 + Number of wildfire images : 15750 images
